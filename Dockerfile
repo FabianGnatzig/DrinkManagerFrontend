@@ -11,6 +11,7 @@ RUN npm install
 COPY . .
 
 # Build production assets
+RUN chmod +x node_modules/.bin/*
 RUN npm run build
 
 # Step 2: Serve with a simple Node server
