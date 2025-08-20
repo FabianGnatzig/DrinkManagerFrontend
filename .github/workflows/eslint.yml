@@ -24,6 +24,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Code Linting
+      - name: "ESLint permissions"
         run: chmod +x ./node_modules/.bin/eslint
+
+      - name: Code Linting
         run: npm run lint
