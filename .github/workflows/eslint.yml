@@ -21,11 +21,11 @@ jobs:
       - name: Code Checkout
         uses: actions/checkout@v2
 
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - name: Install Dependencies
         run: npm install
-
-      - name: "ESLint permissions"
-        run: chmod +x ./node_modules/.bin/eslint
 
       - name: Code Linting
         run: npm run lint
