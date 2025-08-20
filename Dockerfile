@@ -9,6 +9,7 @@ RUN npm install
 
 # Copy all source files
 COPY . .
+COPY .env.production .env
 
 # Build production assets
 RUN chmod +x node_modules/.bin/*
