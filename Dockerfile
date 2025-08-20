@@ -9,10 +9,12 @@ RUN npm install
 
 # Copy all source files
 COPY . .
-COPY .env.production .env
 
 # Build production assets
 RUN chmod +x node_modules/.bin/*
+ARG BACKEND_URL
+ENV VITE_API_URL=$BACKEND_URL
+
 RUN npm run build
 
 # Step 2: Serve with a simple Node server
