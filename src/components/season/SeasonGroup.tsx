@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import "../../App.css";
 import { Season } from "../../classes/SeasonClass";
 
-function SeasonGroup() {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+function SeasonGroup() {
   const [data, setData] = useState<Season[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

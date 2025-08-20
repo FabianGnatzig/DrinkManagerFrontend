@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "../../App.css";
 import { InputTeam } from "../../classes/TeamClass";
 
-const AddTeam = () => {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+const AddTeam = () => {
   const [responseMessage, setResponseMessage] = useState("");
 
   const [inputName, setInputName] = useState("");

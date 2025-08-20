@@ -4,9 +4,9 @@ import "../../App.css";
 import { User } from "../../classes/UserClass";
 import { SeasonEvent } from "../../classes/EventClass";
 
-const AddBringBeer = () => {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+const AddBringBeer = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [inputUserBeer, setInputUserBeer] = useState(1);
   const [inputEvent, setInputEvent] = useState(0);

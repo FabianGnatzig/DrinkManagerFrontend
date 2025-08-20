@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import "../../App.css";
 import { OpenBeerClass } from "../../classes/ServiceClass";
 
-function OpenBeerService() {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+function OpenBeerService() {
   const [data, setData] = useState<OpenBeerClass[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

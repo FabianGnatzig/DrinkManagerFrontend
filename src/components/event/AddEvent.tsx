@@ -6,9 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { Season } from "../../classes/SeasonClass";
 
+const BACKENDURL = import.meta.env.VITE_API_URL;
+
 const AddEvent = () => {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
-  
   const [responseMessage, setResponseMessage] = useState("");
 
   const [inputName, setInputName] = useState("");

@@ -5,9 +5,9 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import { Team } from "../../classes/TeamClass";
 
-const AddUser = () => {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+const AddUser = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [inputUserName, setInputUserName] = useState("username");
   const [inputFirstName, setInputFirstName] = useState("first name");

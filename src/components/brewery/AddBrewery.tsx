@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "../../App.css";
 import { InputBrewery } from "../../classes/BreweryClasses";
 
+const BACKENDURL = import.meta.env.VITE_API_URL;
+
 const AddBrewery = () => {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
-  
   const [responseMessage, setResponseMessage] = useState("");
 
   const [inputName, setInputName] = useState("");
