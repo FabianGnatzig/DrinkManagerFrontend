@@ -1,22 +1,31 @@
-# Use the latest LTS version of Node.js
-FROM node:18-alpine
- 
-# Set the working directory inside the container
-WORKDIR /app
- 
-# Copy package.json and package-lock.json
-COPY package*.json ./
- 
-# Install dependencies
-RUN npm install
- 
-# Copy the rest of your application files
-COPY . .
- 
-RUN chmod +x node_modules/.bin/*
+# Step 1: Build the app
+FROM node:18-alpine AS build
 
-# Expose the port your app runs on
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy all source files
+COPY . .
+
+# Build production assets
+RUN npm run build
+
+# Step 2: Serve with a simple Node server
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install 'serve' globally
+RUN npm install -g serve
+
+# Copy the built files from the previous stage
+COPY --from=build /app/dist ./dist
+
+# Expose port 5173
 EXPOSE 5173
- 
-# Define the command to run your app
-CMD ["npm", "run", "dev"]
+
+# Start server
+CMD ["serve", "-s", "dist", "-l", "5173"]
