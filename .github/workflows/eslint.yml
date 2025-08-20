@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  NODE_VERSION: 14
+  NODE_VERSION: 22
 
 jobs:
   linting:
@@ -14,15 +14,21 @@ jobs:
     runs-on: ubuntu-latest 
     steps: 
       - name: Install NodeJS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Code Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Upgrade npm
+        run: npm install -g npm@latest
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Fix ESLint permissions
+        run: chmod +x ./node_modules/.bin/eslint
 
       - name: Code Linting
         run: npm run lint
