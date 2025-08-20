@@ -3,9 +3,9 @@ import { InputUserBeer } from "../../classes/BeerClass";
 import "../../App.css";
 import { User } from "../../classes/UserClass";
 
+const BACKENDURL = import.meta.env.VITE_API_URL;
+
 const AddUserBeer = () => {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
-  
   const [responseMessage, setResponseMessage] = useState("");
 
   const [inputId, setInputID] = useState(1);

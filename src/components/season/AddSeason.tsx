@@ -3,9 +3,9 @@ import "../../App.css";
 import { InputSeason } from "../../classes/SeasonClass";
 import { Team } from "../../classes/TeamClass";
 
-const AddSeason = () => {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+const AddSeason = () => {
   const [responseMessage, setResponseMessage] = useState("");
 
   const [inputName, setInputName] = useState("");

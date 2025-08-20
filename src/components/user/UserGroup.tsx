@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { User } from "../../classes/UserClass";
 import "../../App.css";
 
-function UserGroup() {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+function UserGroup() {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

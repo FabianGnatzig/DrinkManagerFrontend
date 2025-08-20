@@ -3,9 +3,9 @@ import "../../App.css";
 import { SeasonEvent } from "../../classes/EventClass";
 import moment from "moment";
 
-function EventGroup() {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
+const BACKENDURL = import.meta.env.VITE_API_URL;
 
+function EventGroup() {
   const [data, setData] = useState<SeasonEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

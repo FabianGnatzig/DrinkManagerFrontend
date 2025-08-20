@@ -10,9 +10,9 @@ function Done({ value }: DoneProp) {
   return value ? "Done" : "Open";
 }
 
+const BACKENDURL = import.meta.env.VITE_API_URL;
+
 function BringBeerGroup() {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
-  
   const [data, setData] = useState<BringBeer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

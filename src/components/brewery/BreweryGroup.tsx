@@ -3,9 +3,9 @@ import { Beer } from "../../classes/BeerClass";
 import "../../App.css";
 import { Brewery } from "../../classes/BreweryClasses";
 
+const BACKENDURL = import.meta.env.VITE_API_URL;
+
 function BreweryGroup() {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
-  
   const [data, setData] = useState<Brewery[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import "../../App.css";
 import { UserBeerAmount } from "../../classes/ServiceClass";
 
+const BACKENDURL = import.meta.env.VITE_API_URL;
+
 function UserBeerAmountService() {
-  const BACKENDURL = import.meta.env.VITE_API_URL;
-  
   const [data, setData] = useState<UserBeerAmount[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
