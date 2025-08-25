@@ -30,7 +30,6 @@ const AddEvent = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputEvent = {
         name: inputName,
         season_id: inputSeasonID,

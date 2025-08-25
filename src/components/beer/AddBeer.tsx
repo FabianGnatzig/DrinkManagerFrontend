@@ -40,7 +40,6 @@ const AddBeer = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputBeer = {
         name: inputName,
         beer_code: inputBeerCode,

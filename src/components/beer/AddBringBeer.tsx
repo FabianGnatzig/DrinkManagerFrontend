@@ -42,7 +42,6 @@ const AddBringBeer = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputBringBeer = {
         event_id: inputEvent,
         user_id: inputUser,

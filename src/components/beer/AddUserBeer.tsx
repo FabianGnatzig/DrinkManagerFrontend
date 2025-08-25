@@ -25,7 +25,6 @@ const AddUserBeer = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputUserBeer = {
         user_id: inputId,
         kind: inputKind,

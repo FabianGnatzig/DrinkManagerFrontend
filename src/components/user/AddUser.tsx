@@ -49,7 +49,6 @@ const AddUser = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputUser = {
         username: inputUserName,
         first_name: inputFirstName,

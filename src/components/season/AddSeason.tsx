@@ -25,7 +25,6 @@ const AddSeason = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputSeason = {
         name: inputName,
         team_id: inputTeamID,
