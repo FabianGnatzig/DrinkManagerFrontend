@@ -40,7 +40,9 @@ function BringBeerGroup() {
       });
   }, []);
 
-  if (loading) {return <p>Loading...</p>;}
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (error) {
     const e = error as Error;

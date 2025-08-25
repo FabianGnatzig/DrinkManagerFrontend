@@ -24,12 +24,12 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "no-undef": "off",
-      "eqeqeq": ["error", "always"],
-      "curly": "error",
+      eqeqeq: ["error", "always"],
+      curly: "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
 
-      "semi": ["error", "always"],
-      "quotes": ["error", "double"],
+      semi: ["error", "always"],
+      quotes: ["error", "double"],
     },
   },
 );
