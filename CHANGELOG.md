@@ -20,3 +20,10 @@ All notable changes to this project will be documented in this file.
 
 - Dockerized frontend
 - Custom domain support
+
+
+## [v0.1.0] - 2025-08-25
+
+### Added
+
+- Adds codestyle and changelog check in CI
