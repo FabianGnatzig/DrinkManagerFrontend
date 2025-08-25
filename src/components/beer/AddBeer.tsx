@@ -40,7 +40,6 @@ const AddBeer = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputBeer = {
         name: inputName,
         beer_code: inputBeerCode,
@@ -86,7 +85,9 @@ const AddBeer = () => {
       });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   if (error) {
     const e = error as Error;
     return <p>Error: {e.message}</p>;

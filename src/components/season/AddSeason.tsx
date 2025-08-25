@@ -25,7 +25,6 @@ const AddSeason = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputSeason = {
         name: inputName,
         team_id: inputTeamID,
@@ -68,7 +67,9 @@ const AddSeason = () => {
       });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   if (error) {
     const e = error as Error;
     return <p>Error: {e.message}</p>;

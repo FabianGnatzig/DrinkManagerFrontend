@@ -23,6 +23,13 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "no-undef": "off",
+      eqeqeq: ["error", "always"],
+      curly: "error",
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+
+      semi: ["error", "always"],
+      quotes: ["error", "double"],
     },
   },
 );

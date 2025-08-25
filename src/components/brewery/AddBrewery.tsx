@@ -25,7 +25,6 @@ const AddBrewery = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputBrewery = {
         name: inputName,
         city: inputCity,

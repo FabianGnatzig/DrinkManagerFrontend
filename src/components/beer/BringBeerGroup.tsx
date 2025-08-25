@@ -23,7 +23,7 @@ function BringBeerGroup() {
       await fetch(`${BACKENDURL}/bringbeer/done/${id}`);
       window.location.reload();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -40,10 +40,10 @@ function BringBeerGroup() {
       });
   }, []);
 
-  // Handle loading state
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  // Handle error state
   if (error) {
     const e = error as Error;
     return <p>Error: {e.message}</p>;

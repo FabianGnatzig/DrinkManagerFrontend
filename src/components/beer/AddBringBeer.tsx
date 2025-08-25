@@ -42,7 +42,6 @@ const AddBringBeer = () => {
 
   const handlePostRequest = async () => {
     try {
-      // Data to send in the POST request
       const data: InputBringBeer = {
         event_id: inputEvent,
         user_id: inputUser,
@@ -114,7 +113,9 @@ const AddBringBeer = () => {
       });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   if (error) {
     const e = error as Error;
     return <p>Error: {e.message}</p>;
