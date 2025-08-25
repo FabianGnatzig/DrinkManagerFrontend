@@ -26,8 +26,8 @@ export default tseslint.config(
       "no-undef": "off",
       "eqeqeq": ["error", "always"],
       "curly": "error",
-      "no-console": "warn",
-      
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+
       "semi": ["error", "always"],
       "quotes": ["error", "double"],
     },
