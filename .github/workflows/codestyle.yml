@@ -52,4 +52,5 @@ jobs:
         run: npm ci
 
       - name: Code Linting
-        run: npx . --check
+        run: npx prettier . --check
+
