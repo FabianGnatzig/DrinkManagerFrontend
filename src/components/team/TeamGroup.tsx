@@ -23,47 +23,60 @@ function TeamGroup() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>All Teams</h2>
-      <ul className="list-group">
-        {data.map((team: Team) => (
-          <li
-            className="list-group-item"
-            key={team.id}
-            onClick={() => setSelectedTeam(team)}
-          >
-            {team.name}
-          </li>
-        ))}
-      </ul>
+    <>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">All Teams</span>
+          {!loading && !error && <span className="card-count">{data.length}</span>}
+        </div>
+
+        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
+        {error && <div className="error-state">Failed to load teams</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">No teams yet</div>}
+        {!loading && !error && data.length > 0 && (
+          <ul className="data-list">
+            {data.map((team: Team) => (
+              <li className="data-item" key={team.id} onClick={() => setSelectedTeam(team)}>
+                <div className="data-item-main">
+                  <div className="data-item-primary">{team.name}</div>
+                </div>
+                <div className="data-item-right">
+                  <span className="badge badge-neutral">#{team.id}</span>
+                  <span className="chevron">›</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {selectedTeam && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>{selectedTeam.name}</h3>
-            <div className="list-div">
-              <p>ID: {selectedTeam.id}</p>
-              <br />
+        <div className="modal-overlay" onClick={() => setSelectedTeam(null)}>
+          <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-head">
+              <span className="modal-head-title">{selectedTeam.name}</span>
+              <button className="modal-close" onClick={() => setSelectedTeam(null)}>✕</button>
             </div>
-            <button onClick={() => setSelectedTeam(null)}>Close</button>
+            <div className="modal-body">
+              <div className="detail-grid">
+                <div className="detail-item">
+                  <div className="detail-label">ID</div>
+                  <div className="detail-value">{selectedTeam.id}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">Name</div>
+                  <div className="detail-value">{selectedTeam.name}</div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-ghost" onClick={() => setSelectedTeam(null)}>Close</button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

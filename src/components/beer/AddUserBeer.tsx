@@ -7,40 +7,27 @@ const BACKENDURL = import.meta.env.VITE_API_URL;
 
 const AddUserBeer = () => {
   const [responseMessage, setResponseMessage] = useState("");
-
   const [inputId, setInputID] = useState(1);
-  const [inputKind, setInputKind] = useState("newspaper / fine");
+  const [inputKind, setInputKind] = useState("");
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setInputID(Number(event.target.value));
-  };
-
-  const handleKindChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputKind(event.target.value);
-  };
+  const handleIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputID(Number(event.target.value));
+  const handleKindChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputKind(event.target.value);
 
   const handlePostRequest = async () => {
     try {
-      const data: InputUserBeer = {
-        user_id: inputId,
-        kind: inputKind,
-      };
-
+      const data: InputUserBeer = { user_id: inputId, kind: inputKind };
       const response = await fetch(`${BACKENDURL}/userbeer/add`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
       if (response.ok) {
         const responseData = await response.json();
-        setResponseMessage(responseData.message || "Data posted successfully!");
+        setResponseMessage(responseData.message || "Fine beer added!");
         window.location.reload();
       } else {
         setResponseMessage("Error posting data");
@@ -49,7 +36,7 @@ const AddUserBeer = () => {
       if (error instanceof Error) {
         setResponseMessage("Error: " + error.message);
       } else {
-        setResponseMessage("Unkown error occurred");
+        setResponseMessage("Unknown error occurred");
       }
     }
   };
@@ -68,52 +55,45 @@ const AddUserBeer = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="card">
+        <div className="card-header"><span className="card-title">Add Fine Beer</span></div>
+        <div className="loading-state"><div className="spinner" />Loading...</div>
+      </div>
+    );
   }
   if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-  if (!users) {
-    return <p>not found</p>;
+    return (
+      <div className="card">
+        <div className="card-header"><span className="card-title">Add Fine Beer</span></div>
+        <div className="error-state">Failed to load users</div>
+      </div>
+    );
   }
 
   return (
-    <div className="std-div">
-      <h2>Add fine Beer</h2>
-      <div className="nowrap-div">
-        <label className="input-label" htmlFor="UserID">
-          User
-        </label>
-        <select
-          className="add-input"
-          id="userSelect"
-          value={inputId}
-          onChange={handleIDChange}
-        >
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.first_name} {user.last_name}
-            </option>
-          ))}
-        </select>
+    <div className="card">
+      <div className="card-header">
+        <span className="card-title">Add Fine Beer</span>
       </div>
-
-      <div className="nowrap-div">
-        <label className="input-label" htmlFor="Kind">
-          Type
-        </label>
-        <input
-          className="add-input"
-          id="Kind"
-          type="text"
-          value={inputKind}
-          onChange={handleKindChange}
-        />
+      <div className="form-body">
+        <div className="form-group">
+          <label className="form-label" htmlFor="fineUser">User</label>
+          <select className="form-select" id="fineUser" value={inputId} onChange={handleIDChange}>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>{user.first_name} {user.last_name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="fineKind">Type</label>
+          <input className="form-input" id="fineKind" type="text" value={inputKind} onChange={handleKindChange} placeholder="e.g. newspaper fine" />
+        </div>
       </div>
-
-      <button onClick={handlePostRequest}>Post Data</button>
-      <p>{responseMessage}</p>
+      <div className="form-footer">
+        <button className="btn btn-primary" onClick={handlePostRequest}>Add Fine Beer</button>
+        <p className="response-msg">{responseMessage}</p>
+      </div>
     </div>
   );
 };

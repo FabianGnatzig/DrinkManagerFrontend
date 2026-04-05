@@ -23,53 +23,76 @@ function UserGroup() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>All Users</h2>
-      <ul className="list-group">
-        {data.map((user: User) => (
-          <li
-            className="list-group-item"
-            key={user.id}
-            onClick={() => setSelectedUser(user)}
-          >
-            {user.first_name} {user.last_name}
-          </li>
-        ))}
-      </ul>
+    <>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">All Users</span>
+          {!loading && !error && <span className="card-count">{data.length}</span>}
+        </div>
+
+        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
+        {error && <div className="error-state">Failed to load users</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">No users yet</div>}
+        {!loading && !error && data.length > 0 && (
+          <ul className="data-list">
+            {data.map((user: User) => (
+              <li className="data-item" key={user.id} onClick={() => setSelectedUser(user)}>
+                <div className="data-item-main">
+                  <div className="data-item-primary">{user.first_name} {user.last_name}</div>
+                  <div className="data-item-secondary">@{user.username}</div>
+                </div>
+                <div className="data-item-right">
+                  <span className="badge badge-neutral">{user.role}</span>
+                  <span className="chevron">›</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {selectedUser && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>
-              {selectedUser.first_name} {selectedUser.last_name}
-            </h3>
-            <div className="list-div">
-              <p>ID: {selectedUser.id}</p>
-              <p>Username: {selectedUser.username}</p>
-              <p>TeamID: {selectedUser.team_id}</p>
-              <p>Role: {selectedUser.role}</p>
-              <p>Birthday: {selectedUser.birthday.toString()}</p>
-              <br />
+        <div className="modal-overlay" onClick={() => setSelectedUser(null)}>
+          <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-head">
+              <span className="modal-head-title">{selectedUser.first_name} {selectedUser.last_name}</span>
+              <button className="modal-close" onClick={() => setSelectedUser(null)}>✕</button>
             </div>
-            <button onClick={() => setSelectedUser(null)}>Close</button>
+            <div className="modal-body">
+              <div className="detail-section">
+                <div className="detail-section-title">Profile</div>
+                <div className="detail-grid">
+                  <div className="detail-item">
+                    <div className="detail-label">ID</div>
+                    <div className="detail-value">{selectedUser.id}</div>
+                  </div>
+                  <div className="detail-item">
+                    <div className="detail-label">Role</div>
+                    <div className="detail-value">{selectedUser.role}</div>
+                  </div>
+                  <div className="detail-item full">
+                    <div className="detail-label">Username</div>
+                    <div className="detail-value">@{selectedUser.username}</div>
+                  </div>
+                  <div className="detail-item">
+                    <div className="detail-label">Team ID</div>
+                    <div className="detail-value">{selectedUser.team_id}</div>
+                  </div>
+                  <div className="detail-item">
+                    <div className="detail-label">Birthday</div>
+                    <div className="detail-value">{selectedUser.birthday?.toString()}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-ghost" onClick={() => setSelectedUser(null)}>Close</button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

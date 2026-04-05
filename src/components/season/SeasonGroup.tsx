@@ -23,49 +23,64 @@ function SeasonGroup() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>All Seasons</h2>
-      <ul className="list-group">
-        {data.map((season: Season) => (
-          <li
-            className="list-group-item"
-            key={season.id}
-            onClick={() => setSelectedSeason(season)}
-          >
-            {season.name}
-          </li>
-        ))}
-      </ul>
+    <>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">All Seasons</span>
+          {!loading && !error && <span className="card-count">{data.length}</span>}
+        </div>
+
+        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
+        {error && <div className="error-state">Failed to load seasons</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">No seasons yet</div>}
+        {!loading && !error && data.length > 0 && (
+          <ul className="data-list">
+            {data.map((season: Season) => (
+              <li className="data-item" key={season.id} onClick={() => setSelectedSeason(season)}>
+                <div className="data-item-main">
+                  <div className="data-item-primary">{season.name}</div>
+                  <div className="data-item-secondary">{season.team?.name ?? "No team"}</div>
+                </div>
+                <div className="data-item-right">
+                  <span className="chevron">›</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {selectedSeason && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>{selectedSeason.name}</h3>
-            <div className="list-div">
-              <p>Season ID: {selectedSeason.id}</p>
-              <h5>Team Name: {selectedSeason.team?.name ?? "None"} </h5>
-              <p>Team ID: {selectedSeason.team?.id ?? "None"} </p>
-              <br />
+        <div className="modal-overlay" onClick={() => setSelectedSeason(null)}>
+          <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-head">
+              <span className="modal-head-title">{selectedSeason.name}</span>
+              <button className="modal-close" onClick={() => setSelectedSeason(null)}>✕</button>
             </div>
-            <button onClick={() => setSelectedSeason(null)}>Close</button>
+            <div className="modal-body">
+              <div className="detail-grid">
+                <div className="detail-item">
+                  <div className="detail-label">Season ID</div>
+                  <div className="detail-value">{selectedSeason.id}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">Team</div>
+                  <div className="detail-value">{selectedSeason.team?.name ?? "—"}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">Team ID</div>
+                  <div className="detail-value">{selectedSeason.team?.id ?? "—"}</div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-ghost" onClick={() => setSelectedSeason(null)}>Close</button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

@@ -24,50 +24,60 @@ function EventGroup() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>All Events</h2>
-      <ul className="list-group">
-        {data.map((event: SeasonEvent) => (
-          <li
-            className="list-group-item"
-            key={event.id}
-            onClick={() => setSelectedEvent(event)}
-          >
-            {event.name}
-          </li>
-        ))}
-      </ul>
+    <>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">All Events</span>
+          {!loading && !error && <span className="card-count">{data.length}</span>}
+        </div>
+
+        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
+        {error && <div className="error-state">Failed to load events</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">No events yet</div>}
+        {!loading && !error && data.length > 0 && (
+          <ul className="data-list">
+            {data.map((event: SeasonEvent) => (
+              <li className="data-item" key={event.id} onClick={() => setSelectedEvent(event)}>
+                <div className="data-item-main">
+                  <div className="data-item-primary">{event.name}</div>
+                  <div className="data-item-secondary">{moment(event.event_date).format("D MMM YYYY")}</div>
+                </div>
+                <div className="data-item-right">
+                  <span className="chevron">›</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {selectedEvent && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>{selectedEvent.name}</h3>
-            <div className="list-div">
-              <p>Event ID: {selectedEvent.id}</p>
-              <p>
-                Date: {moment(selectedEvent.event_date).format("Do MMMM YYYY")}
-              </p>
-              <br />
+        <div className="modal-overlay" onClick={() => setSelectedEvent(null)}>
+          <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-head">
+              <span className="modal-head-title">{selectedEvent.name}</span>
+              <button className="modal-close" onClick={() => setSelectedEvent(null)}>✕</button>
             </div>
-            <button onClick={() => setSelectedEvent(null)}>Close</button>
+            <div className="modal-body">
+              <div className="detail-grid">
+                <div className="detail-item">
+                  <div className="detail-label">Event ID</div>
+                  <div className="detail-value">{selectedEvent.id}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">Date</div>
+                  <div className="detail-value">{moment(selectedEvent.event_date).format("Do MMMM YYYY")}</div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-ghost" onClick={() => setSelectedEvent(null)}>Close</button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

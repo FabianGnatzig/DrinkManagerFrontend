@@ -23,47 +23,65 @@ function UserBeerGroup() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>All fine Beers</h2>
-      <ul className="list-group">
-        {data.map((beer: UserBeer) => (
-          <li
-            className="list-group-item"
-            key={beer.id}
-            onClick={() => setSelectedBeer(beer)}
-          >
-            User: {beer.user_id} / {beer.kind}
-          </li>
-        ))}
-      </ul>
+    <>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">All Fine Beers</span>
+          {!loading && !error && <span className="card-count">{data.length}</span>}
+        </div>
+
+        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
+        {error && <div className="error-state">Failed to load fine beers</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">No fine beers yet</div>}
+        {!loading && !error && data.length > 0 && (
+          <ul className="data-list">
+            {data.map((beer: UserBeer) => (
+              <li className="data-item" key={beer.id} onClick={() => setSelectedBeer(beer)}>
+                <div className="data-item-main">
+                  <div className="data-item-primary">{beer.kind}</div>
+                  <div className="data-item-secondary">User #{beer.user_id}</div>
+                </div>
+                <div className="data-item-right">
+                  <span className="badge badge-open">Fine</span>
+                  <span className="chevron">›</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {selectedBeer && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>{selectedBeer.kind}</h3>
-            <div className="list-div">
-              <p>UserID: {selectedBeer.user_id}</p>
-              <p>ID: {selectedBeer.id}</p>
+        <div className="modal-overlay" onClick={() => setSelectedBeer(null)}>
+          <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-head">
+              <span className="modal-head-title">{selectedBeer.kind}</span>
+              <button className="modal-close" onClick={() => setSelectedBeer(null)}>✕</button>
             </div>
-            <button onClick={() => setSelectedBeer(null)}>Close</button>
+            <div className="modal-body">
+              <div className="detail-grid">
+                <div className="detail-item">
+                  <div className="detail-label">ID</div>
+                  <div className="detail-value">{selectedBeer.id}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">User ID</div>
+                  <div className="detail-value">{selectedBeer.user_id}</div>
+                </div>
+                <div className="detail-item full">
+                  <div className="detail-label">Type</div>
+                  <div className="detail-value">{selectedBeer.kind}</div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-ghost" onClick={() => setSelectedBeer(null)}>Close</button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

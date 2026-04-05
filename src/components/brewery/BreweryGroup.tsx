@@ -24,59 +24,87 @@ function BreweryGroup() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>All Brewerys</h2>
-      <ul className="list-group">
-        {data.map((brewery: Brewery) => (
-          <li
-            className="list-group-item"
-            key={brewery.id}
-            onClick={() => setSelectedBrewery(brewery)}
-          >
-            {brewery.name}
-          </li>
-        ))}
-      </ul>
+    <>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">All Breweries</span>
+          {!loading && !error && <span className="card-count">{data.length}</span>}
+        </div>
+
+        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
+        {error && <div className="error-state">Failed to load breweries</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">No breweries yet</div>}
+        {!loading && !error && data.length > 0 && (
+          <ul className="data-list">
+            {data.map((brewery: Brewery) => (
+              <li className="data-item" key={brewery.id} onClick={() => setSelectedBrewery(brewery)}>
+                <div className="data-item-main">
+                  <div className="data-item-primary">{brewery.name}</div>
+                  <div className="data-item-secondary">{brewery.city}, {brewery.country}</div>
+                </div>
+                <div className="data-item-right">
+                  <span className="badge badge-neutral">{brewery.beers?.length ?? 0} beers</span>
+                  <span className="chevron">›</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {selectedBrewery && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>{selectedBrewery.name}</h3>
-            <div className="list-div">
-              <p>City: {selectedBrewery.city}</p>
-              <p>Country: {selectedBrewery.country}</p>
-              <br />
+        <div className="modal-overlay" onClick={() => setSelectedBrewery(null)}>
+          <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-head">
+              <span className="modal-head-title">{selectedBrewery.name}</span>
+              <button className="modal-close" onClick={() => setSelectedBrewery(null)}>✕</button>
             </div>
-            <div className="list-div">
-              {selectedBrewery.beers.map((beer: Beer) => (
-                <div key={beer.id}>
-                  <h5>{beer.name}</h5>
-                  <p>Code: {beer.beer_code}</p>
-                  <p>Vol: {beer.volume}</p>
-                  <p>Alc: {beer.alcohol}</p>
-                  <br />
+            <div className="modal-body">
+              <div className="detail-section">
+                <div className="detail-section-title">Location</div>
+                <div className="detail-grid">
+                  <div className="detail-item">
+                    <div className="detail-label">City</div>
+                    <div className="detail-value">{selectedBrewery.city}</div>
+                  </div>
+                  <div className="detail-item">
+                    <div className="detail-label">Country</div>
+                    <div className="detail-value">{selectedBrewery.country}</div>
+                  </div>
                 </div>
-              ))}
+              </div>
+              {selectedBrewery.beers?.length > 0 && (
+                <div className="detail-section">
+                  <div className="detail-section-title">Beers ({selectedBrewery.beers.length})</div>
+                  {selectedBrewery.beers.map((beer: Beer) => (
+                    <div key={beer.id} style={{ marginBottom: 8 }}>
+                      <div className="detail-grid">
+                        <div className="detail-item full">
+                          <div className="detail-label">Name</div>
+                          <div className="detail-value">{beer.name}</div>
+                        </div>
+                        <div className="detail-item">
+                          <div className="detail-label">Volume</div>
+                          <div className="detail-value">{beer.volume} L</div>
+                        </div>
+                        <div className="detail-item">
+                          <div className="detail-label">Alcohol</div>
+                          <div className="detail-value">{beer.alcohol}%</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <button onClick={() => setSelectedBrewery(null)}>Close</button>
+            <div className="modal-footer">
+              <button className="btn btn-ghost" onClick={() => setSelectedBrewery(null)}>Close</button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

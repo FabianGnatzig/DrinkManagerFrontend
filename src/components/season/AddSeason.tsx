@@ -7,40 +7,26 @@ const BACKENDURL = import.meta.env.VITE_API_URL;
 
 const AddSeason = () => {
   const [responseMessage, setResponseMessage] = useState("");
-
   const [inputName, setInputName] = useState("");
   const [inputTeamID, setInputTeamID] = useState(0);
-
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setInputTeamID(Number(event.target.value));
-  };
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputName(event.target.value);
-  };
+  const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputTeamID(Number(event.target.value));
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
   const handlePostRequest = async () => {
     try {
-      const data: InputSeason = {
-        name: inputName,
-        team_id: inputTeamID,
-      };
-
+      const data: InputSeason = { name: inputName, team_id: inputTeamID };
       const response = await fetch(`${BACKENDURL}/season/add`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
       if (response.ok) {
         const responseData = await response.json();
-        setResponseMessage(responseData.message || "Data posted successfully!");
+        setResponseMessage(responseData.message || "Season added!");
         window.location.reload();
       } else {
         setResponseMessage("Error posting data");
@@ -49,7 +35,7 @@ const AddSeason = () => {
       if (error instanceof Error) {
         setResponseMessage("Error: " + error.message);
       } else {
-        setResponseMessage("Unkown error occurred");
+        setResponseMessage("Unknown error occurred");
       }
     }
   };
@@ -68,50 +54,45 @@ const AddSeason = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="card">
+        <div className="card-header"><span className="card-title">Add Season</span></div>
+        <div className="loading-state"><div className="spinner" />Loading...</div>
+      </div>
+    );
   }
   if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-  if (!teams) {
-    return <p>not found</p>;
+    return (
+      <div className="card">
+        <div className="card-header"><span className="card-title">Add Season</span></div>
+        <div className="error-state">Failed to load teams</div>
+      </div>
+    );
   }
 
   return (
-    <div className="std-div">
-      <h2>Add Season</h2>
-      <div className="nowrap-div">
-        <label className="input-label" htmlFor="name">
-          Name
-        </label>
-        <input
-          className="add-input"
-          id="name"
-          type="text"
-          value={inputName}
-          onChange={handleNameChange}
-        />
+    <div className="card">
+      <div className="card-header">
+        <span className="card-title">Add Season</span>
       </div>
-      <div className="nowrap-div">
-        <label className="input-label" htmlFor="teamid">
-          Team
-        </label>
-        <select
-          className="add-input"
-          id="teamSelect"
-          value={inputTeamID}
-          onChange={handleTeamIDChange}
-        >
-          {teams.map((team) => (
-            <option key={team.id} value={team.id}>
-              {team.name}
-            </option>
-          ))}
-        </select>
+      <div className="form-body">
+        <div className="form-group">
+          <label className="form-label" htmlFor="seasonName">Name</label>
+          <input className="form-input" id="seasonName" type="text" value={inputName} onChange={handleNameChange} placeholder="Season name" />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="seasonTeam">Team</label>
+          <select className="form-select" id="seasonTeam" value={inputTeamID} onChange={handleTeamIDChange}>
+            {teams.map((team) => (
+              <option key={team.id} value={team.id}>{team.name}</option>
+            ))}
+          </select>
+        </div>
       </div>
-      <button onClick={handlePostRequest}>Post Data</button>
-      <p>{responseMessage}</p>
+      <div className="form-footer">
+        <button className="btn btn-primary" onClick={handlePostRequest}>Add Season</button>
+        <p className="response-msg">{responseMessage}</p>
+      </div>
     </div>
   );
 };

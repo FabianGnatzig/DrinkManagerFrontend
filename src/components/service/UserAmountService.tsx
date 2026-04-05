@@ -22,32 +22,57 @@ function UserBeerAmountService() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>Brought Beer Amount</h2>
-      <ul className="list-group">
-        {data.map((user_bear_amount: UserBeerAmount) => (
-          <li className="list-group-item" key={user_bear_amount.user}>
-            Name: {user_bear_amount.user} / Brought beer:{" "}
-            {user_bear_amount.amount} / Fine beer:{" "}
-            {user_bear_amount.included_fine} / Result:{" "}
-            {user_bear_amount.amount - user_bear_amount.included_fine}
-          </li>
-        ))}
-      </ul>
+    <div className="card">
+      <div className="card-header">
+        <span className="card-title">Beer Amount Scoreboard</span>
+        {!loading && !error && (
+          <span className="card-count">{data.length} users</span>
+        )}
+      </div>
+
+      {loading && (
+        <div className="loading-state">
+          <div className="spinner" />
+          Loading...
+        </div>
+      )}
+
+      {error && (
+        <div className="error-state">Failed to load beer amounts</div>
+      )}
+
+      {!loading && !error && data.length === 0 && (
+        <div className="empty-state">No data</div>
+      )}
+
+      {!loading && !error && data.length > 0 && (
+        <ul className="data-list">
+          {data.map((item: UserBeerAmount) => (
+            <li className="stat-item" key={item.user} style={{ listStyle: "none" }}>
+              <div>
+                <div className="stat-user">{item.user}</div>
+              </div>
+              <div className="stat-chips">
+                <div className="stat-chip">
+                  <div className="stat-chip-value">{item.amount}</div>
+                  <div className="stat-chip-label">Brought</div>
+                </div>
+                <div className="stat-chip">
+                  <div className="stat-chip-value">{item.included_fine}</div>
+                  <div className="stat-chip-label">Fines</div>
+                </div>
+                <div className={`stat-chip ${item.amount - item.included_fine >= 0 ? "positive" : "negative"}`}>
+                  <div className="stat-chip-value">
+                    {item.amount - item.included_fine}
+                  </div>
+                  <div className="stat-chip-label">Balance</div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
