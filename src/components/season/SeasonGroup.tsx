@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { Season } from "../../classes/SeasonClass";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -9,9 +11,10 @@ function SeasonGroup() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
+  const t = useT();
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/season/all`)
+    authFetch(`${BACKENDURL}/season/all`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -27,13 +30,13 @@ function SeasonGroup() {
     <>
       <div className="card">
         <div className="card-header">
-          <span className="card-title">All Seasons</span>
+          <span className="card-title">{t("cardAllSeasons")}</span>
           {!loading && !error && <span className="card-count">{data.length}</span>}
         </div>
 
-        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
-        {error && <div className="error-state">Failed to load seasons</div>}
-        {!loading && !error && data.length === 0 && <div className="empty-state">No seasons yet</div>}
+        {loading && <div className="loading-state"><div className="spinner" />{t("loading")}</div>}
+        {error && <div className="error-state">{t("errSeasons")}</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">{t("emptySeasons")}</div>}
         {!loading && !error && data.length > 0 && (
           <ul className="data-list">
             {data.map((season: Season) => (
@@ -61,21 +64,21 @@ function SeasonGroup() {
             <div className="modal-body">
               <div className="detail-grid">
                 <div className="detail-item">
-                  <div className="detail-label">Season ID</div>
+                  <div className="detail-label">{t("detailSeasonId")}</div>
                   <div className="detail-value">{selectedSeason.id}</div>
                 </div>
                 <div className="detail-item">
-                  <div className="detail-label">Team</div>
+                  <div className="detail-label">{t("detailTeam")}</div>
                   <div className="detail-value">{selectedSeason.team?.name ?? "—"}</div>
                 </div>
                 <div className="detail-item">
-                  <div className="detail-label">Team ID</div>
+                  <div className="detail-label">{t("detailTeamId")}</div>
                   <div className="detail-value">{selectedSeason.team?.id ?? "—"}</div>
                 </div>
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-ghost" onClick={() => setSelectedSeason(null)}>Close</button>
+              <button className="btn btn-ghost" onClick={() => setSelectedSeason(null)}>{t("close")}</button>
             </div>
           </div>
         </div>

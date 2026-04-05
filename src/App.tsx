@@ -3,6 +3,7 @@ import "./App.css";
 import logo from "./assets/Logo_oB_quadrat_weiss.png";
 import LoginPage from "./components/auth/LoginPage";
 import { getToken, clearToken, isAdminOrManager } from "./lib/api";
+import { useT, useLang } from "./lib/i18n";
 
 import OpenBeerService from "./components/service/OpenBeerService";
 import UserBeerAmountService from "./components/service/UserAmountService";
@@ -34,51 +35,11 @@ type Section =
   | "finebeers"
   | "bringbeer";
 
-const NAV = [
-  {
-    group: null,
-    items: [{ id: "dashboard" as Section, label: "Dashboard", icon: "◈" }],
-  },
-  {
-    group: "Catalog",
-    items: [
-      { id: "beers" as Section, label: "Beers", icon: "🍺" },
-      { id: "breweries" as Section, label: "Breweries", icon: "🏭" },
-    ],
-  },
-  {
-    group: "Organization",
-    items: [
-      { id: "users" as Section, label: "Users", icon: "👤" },
-      { id: "teams" as Section, label: "Teams", icon: "👥" },
-      { id: "seasons" as Section, label: "Seasons", icon: "🔄" },
-      { id: "events" as Section, label: "Events", icon: "📅" },
-    ],
-  },
-  {
-    group: "Beer Tracking",
-    items: [
-      { id: "finebeers" as Section, label: "Fine Beers", icon: "⚠️" },
-      { id: "bringbeer" as Section, label: "Bring Beer", icon: "📦" },
-    ],
-  },
-];
-
-const SECTION_META: Record<Section, { title: string; subtitle: string }> = {
-  dashboard: { title: "Dashboard", subtitle: "Open fines and beer amounts at a glance" },
-  beers: { title: "Beers", subtitle: "Manage the beer catalog" },
-  breweries: { title: "Breweries", subtitle: "Manage breweries" },
-  users: { title: "Users", subtitle: "Manage team members" },
-  teams: { title: "Teams", subtitle: "Manage teams" },
-  seasons: { title: "Seasons", subtitle: "Manage seasons" },
-  events: { title: "Events", subtitle: "Manage season events" },
-  finebeers: { title: "Fine Beers", subtitle: "Assign and track beer fines" },
-  bringbeer: { title: "Bring Beer", subtitle: "Track who brings beer to events" },
-};
-
 function App() {
   const [loggedIn, setLoggedIn] = useState<boolean>(() => !!getToken());
   const [active, setActive] = useState<Section>("dashboard");
+  const t = useT();
+  const { lang, setLang } = useLang();
 
   if (!loggedIn) {
     return <LoginPage onLogin={() => setLoggedIn(true)} />;
@@ -88,6 +49,49 @@ function App() {
     clearToken();
     setLoggedIn(false);
   };
+
+  const NAV = [
+    {
+      group: null,
+      items: [{ id: "dashboard" as Section, label: t("navDashboard"), icon: "◈" }],
+    },
+    {
+      group: t("groupCatalog"),
+      items: [
+        { id: "beers" as Section, label: t("navBeers"), icon: "🍺" },
+        { id: "breweries" as Section, label: t("navBreweries"), icon: "🏭" },
+      ],
+    },
+    {
+      group: t("groupOrganization"),
+      items: [
+        { id: "users" as Section, label: t("navUsers"), icon: "👤" },
+        { id: "teams" as Section, label: t("navTeams"), icon: "👥" },
+        { id: "seasons" as Section, label: t("navSeasons"), icon: "🔄" },
+        { id: "events" as Section, label: t("navEvents"), icon: "📅" },
+      ],
+    },
+    {
+      group: t("groupBeerTracking"),
+      items: [
+        { id: "finebeers" as Section, label: t("navFineBeers"), icon: "⚠️" },
+        { id: "bringbeer" as Section, label: t("navBringBeer"), icon: "📦" },
+      ],
+    },
+  ];
+
+  const SECTION_META: Record<Section, { title: string; subtitle: string }> = {
+    dashboard: { title: t("dashboardTitle"), subtitle: t("dashboardSub") },
+    beers: { title: t("beersTitle"), subtitle: t("beersSub") },
+    breweries: { title: t("breweriesTitle"), subtitle: t("breweriesSub") },
+    users: { title: t("usersTitle"), subtitle: t("usersSub") },
+    teams: { title: t("teamsTitle"), subtitle: t("teamsSub") },
+    seasons: { title: t("seasonsTitle"), subtitle: t("seasonsSub") },
+    events: { title: t("eventsTitle"), subtitle: t("eventsSub") },
+    finebeers: { title: t("finebeersTitle"), subtitle: t("finebeersSub") },
+    bringbeer: { title: t("bringbeerTitle"), subtitle: t("bringbeerSub") },
+  };
+
   const meta = SECTION_META[active];
 
   return (
@@ -118,9 +122,23 @@ function App() {
         ))}
 
         <div className="sidebar-footer">
+          <div className="lang-toggle">
+            <button
+              className={`lang-btn${lang === "en" ? " active" : ""}`}
+              onClick={() => setLang("en")}
+            >
+              EN
+            </button>
+            <button
+              className={`lang-btn${lang === "de" ? " active" : ""}`}
+              onClick={() => setLang("de")}
+            >
+              DE
+            </button>
+          </div>
           <button className="btn-logout" onClick={handleLogout}>
             <span className="nav-icon">⏏</span>
-            Sign out
+            {t("signOut")}
           </button>
         </div>
       </aside>

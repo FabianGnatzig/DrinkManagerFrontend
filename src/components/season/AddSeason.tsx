@@ -3,6 +3,7 @@ import "../../App.css";
 import { authFetch } from "../../lib/api";
 import { InputSeason } from "../../classes/SeasonClass";
 import { Team } from "../../classes/TeamClass";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -13,6 +14,7 @@ const AddSeason = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const t = useT();
 
   const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputTeamID(Number(event.target.value));
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
@@ -58,16 +60,16 @@ const AddSeason = () => {
   if (loading) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Season</span></div>
-        <div className="loading-state"><div className="spinner" />Loading...</div>
+        <div className="card-header"><span className="card-title">{t("cardAddSeason")}</span></div>
+        <div className="loading-state"><div className="spinner" />{t("loading")}</div>
       </div>
     );
   }
   if (error) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Season</span></div>
-        <div className="error-state">Failed to load teams</div>
+        <div className="card-header"><span className="card-title">{t("cardAddSeason")}</span></div>
+        <div className="error-state">{t("errTeamsLoad")}</div>
       </div>
     );
   }
@@ -75,15 +77,15 @@ const AddSeason = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Add Season</span>
+        <span className="card-title">{t("cardAddSeason")}</span>
       </div>
       <div className="form-body">
         <div className="form-group">
-          <label className="form-label" htmlFor="seasonName">Name</label>
-          <input className="form-input" id="seasonName" type="text" value={inputName} onChange={handleNameChange} placeholder="Season name" />
+          <label className="form-label" htmlFor="seasonName">{t("labelName")}</label>
+          <input className="form-input" id="seasonName" type="text" value={inputName} onChange={handleNameChange} placeholder={t("phSeasonName")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="seasonTeam">Team</label>
+          <label className="form-label" htmlFor="seasonTeam">{t("labelTeam")}</label>
           <select className="form-select" id="seasonTeam" value={inputTeamID} onChange={handleTeamIDChange}>
             {teams.map((team) => (
               <option key={team.id} value={team.id}>{team.name}</option>
@@ -92,7 +94,7 @@ const AddSeason = () => {
         </div>
       </div>
       <div className="form-footer">
-        <button className="btn btn-primary" onClick={handlePostRequest}>Add Season</button>
+        <button className="btn btn-primary" onClick={handlePostRequest}>{t("btnAddSeason")}</button>
         <p className="response-msg">{responseMessage}</p>
       </div>
     </div>

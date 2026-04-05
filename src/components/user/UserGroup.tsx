@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { User } from "../../classes/UserClass";
 import "../../App.css";
 import { authFetch, isAdmin } from "../../lib/api";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -11,6 +12,7 @@ function UserGroup() {
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const admin = isAdmin();
+  const t = useT();
 
   const handleDelete = async (id: number) => {
     try {
@@ -44,13 +46,13 @@ function UserGroup() {
     <>
       <div className="card">
         <div className="card-header">
-          <span className="card-title">All Users</span>
+          <span className="card-title">{t("cardAllUsers")}</span>
           {!loading && !error && <span className="card-count">{data.length}</span>}
         </div>
 
-        {loading && <div className="loading-state"><div className="spinner" />Loading...</div>}
-        {error && <div className="error-state">Failed to load users</div>}
-        {!loading && !error && data.length === 0 && <div className="empty-state">No users yet</div>}
+        {loading && <div className="loading-state"><div className="spinner" />{t("loading")}</div>}
+        {error && <div className="error-state">{t("errUsers")}</div>}
+        {!loading && !error && data.length === 0 && <div className="empty-state">{t("emptyUsers")}</div>}
         {!loading && !error && data.length > 0 && (
           <ul className="data-list">
             {data.map((user: User) => (
@@ -78,26 +80,26 @@ function UserGroup() {
             </div>
             <div className="modal-body">
               <div className="detail-section">
-                <div className="detail-section-title">Profile</div>
+                <div className="detail-section-title">{t("detailProfile")}</div>
                 <div className="detail-grid">
                   <div className="detail-item">
-                    <div className="detail-label">ID</div>
+                    <div className="detail-label">{t("detailId")}</div>
                     <div className="detail-value">{selectedUser.id}</div>
                   </div>
                   <div className="detail-item">
-                    <div className="detail-label">Role</div>
+                    <div className="detail-label">{t("detailRole")}</div>
                     <div className="detail-value">{selectedUser.role}</div>
                   </div>
                   <div className="detail-item full">
-                    <div className="detail-label">Username</div>
+                    <div className="detail-label">{t("detailUsername")}</div>
                     <div className="detail-value">@{selectedUser.username}</div>
                   </div>
                   <div className="detail-item">
-                    <div className="detail-label">Team ID</div>
+                    <div className="detail-label">{t("detailTeamId")}</div>
                     <div className="detail-value">{selectedUser.team_id}</div>
                   </div>
                   <div className="detail-item">
-                    <div className="detail-label">Birthday</div>
+                    <div className="detail-label">{t("detailBirthday")}</div>
                     <div className="detail-value">{selectedUser.birthday?.toString()}</div>
                   </div>
                 </div>
@@ -110,10 +112,10 @@ function UserGroup() {
                   style={{ background: "var(--red-bg)", color: "var(--red)", border: "1px solid rgba(239,68,68,0.25)", flex: 1 }}
                   onClick={() => handleDelete(selectedUser.id)}
                 >
-                  Delete user
+                  {t("btnDeleteUser")}
                 </button>
               )}
-              <button className="btn btn-ghost" onClick={() => setSelectedUser(null)}>Close</button>
+              <button className="btn btn-ghost" onClick={() => setSelectedUser(null)}>{t("close")}</button>
             </div>
           </div>
         </div>

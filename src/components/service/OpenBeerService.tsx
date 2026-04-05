@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { OpenBeerClass } from "../../classes/ServiceClass";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -8,9 +10,10 @@ function OpenBeerService() {
   const [data, setData] = useState<OpenBeerClass[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const t = useT();
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/service/all_open_beer`)
+    authFetch(`${BACKENDURL}/service/all_open_beer`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -25,7 +28,7 @@ function OpenBeerService() {
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Open Fine Beers</span>
+        <span className="card-title">{t("cardOpenFines")}</span>
         {!loading && !error && (
           <span className="card-count">{data.length}</span>
         )}
@@ -34,18 +37,18 @@ function OpenBeerService() {
       {loading && (
         <div className="loading-state">
           <div className="spinner" />
-          Loading...
+          {t("loading")}
         </div>
       )}
 
       {error && (
         <div className="error-state">
-          Failed to load open beers
+          {t("errOpenFines")}
         </div>
       )}
 
       {!loading && !error && data.length === 0 && (
-        <div className="empty-state">No open fines</div>
+        <div className="empty-state">{t("emptyOpenFines")}</div>
       )}
 
       {!loading && !error && data.length > 0 && (
@@ -57,7 +60,7 @@ function OpenBeerService() {
                 <div className="data-item-secondary">{item.kind}</div>
               </div>
               <div className="data-item-right">
-                <span className="badge badge-open">Open</span>
+                <span className="badge badge-open">{t("open")}</span>
               </div>
             </li>
           ))}

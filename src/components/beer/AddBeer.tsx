@@ -3,6 +3,7 @@ import { InputBeer } from "../../classes/BeerClass";
 import "../../App.css";
 import { authFetch } from "../../lib/api";
 import { Brewery } from "../../classes/BreweryClasses";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -18,6 +19,7 @@ const AddBeer = () => {
   const [brewerys, setBrewerys] = useState<Brewery[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const t = useT();
 
   const handleIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setInputID(Number(event.target.value));
@@ -82,16 +84,16 @@ const AddBeer = () => {
   if (loading) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Beer</span></div>
-        <div className="loading-state"><div className="spinner" />Loading...</div>
+        <div className="card-header"><span className="card-title">{t("cardAddBeer")}</span></div>
+        <div className="loading-state"><div className="spinner" />{t("loading")}</div>
       </div>
     );
   }
   if (error) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Beer</span></div>
-        <div className="error-state">Failed to load breweries</div>
+        <div className="card-header"><span className="card-title">{t("cardAddBeer")}</span></div>
+        <div className="error-state">{t("errBreweriesLoad")}</div>
       </div>
     );
   }
@@ -99,11 +101,11 @@ const AddBeer = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Add Beer</span>
+        <span className="card-title">{t("cardAddBeer")}</span>
       </div>
       <div className="form-body">
         <div className="form-group">
-          <label className="form-label" htmlFor="brewerySelect">Brewery</label>
+          <label className="form-label" htmlFor="brewerySelect">{t("labelBrewery")}</label>
           <select className="form-select" id="brewerySelect" value={inputId} onChange={handleIDChange}>
             {brewerys.map((brewery) => (
               <option key={brewery.id} value={brewery.id}>{brewery.name}</option>
@@ -111,24 +113,24 @@ const AddBeer = () => {
           </select>
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="beerName">Name</label>
-          <input className="form-input" id="beerName" type="text" value={inputName} onChange={handleNameChange} placeholder="Beer name" />
+          <label className="form-label" htmlFor="beerName">{t("labelName")}</label>
+          <input className="form-input" id="beerName" type="text" value={inputName} onChange={handleNameChange} placeholder={t("phBeerName")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="beerCode">Code</label>
+          <label className="form-label" htmlFor="beerCode">{t("labelCode")}</label>
           <input className="form-input" id="beerCode" type="number" value={inputBeerCode} onChange={handleCodeChange} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="beerAlc">Alcohol %</label>
+          <label className="form-label" htmlFor="beerAlc">{t("labelAlcohol")}</label>
           <input className="form-input" id="beerAlc" type="number" step="0.1" value={inputAlcohol} onChange={handleAlcoholChange} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="beerVol">Volume (L)</label>
+          <label className="form-label" htmlFor="beerVol">{t("labelVolume")}</label>
           <input className="form-input" id="beerVol" type="number" step="0.1" value={inputVolume} onChange={handleVolumeChange} />
         </div>
       </div>
       <div className="form-footer">
-        <button className="btn btn-primary" onClick={handlePostRequest}>Add Beer</button>
+        <button className="btn btn-primary" onClick={handlePostRequest}>{t("btnAddBeer")}</button>
         <p className="response-msg">{responseMessage}</p>
       </div>
     </div>

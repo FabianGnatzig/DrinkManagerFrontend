@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { Season } from "../../classes/SeasonClass";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -17,6 +18,7 @@ const AddEvent = () => {
   const [seasons, setSeasons] = useState<Season[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const t = useT();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
   const handleSeasonIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputSeasonID(Number(event.target.value));
@@ -66,16 +68,16 @@ const AddEvent = () => {
   if (loading) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Event</span></div>
-        <div className="loading-state"><div className="spinner" />Loading...</div>
+        <div className="card-header"><span className="card-title">{t("cardAddEvent")}</span></div>
+        <div className="loading-state"><div className="spinner" />{t("loading")}</div>
       </div>
     );
   }
   if (error) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Event</span></div>
-        <div className="error-state">Failed to load seasons</div>
+        <div className="card-header"><span className="card-title">{t("cardAddEvent")}</span></div>
+        <div className="error-state">{t("errSeasonsLoad")}</div>
       </div>
     );
   }
@@ -83,15 +85,15 @@ const AddEvent = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Add Event</span>
+        <span className="card-title">{t("cardAddEvent")}</span>
       </div>
       <div className="form-body">
         <div className="form-group">
-          <label className="form-label" htmlFor="eventName">Name</label>
-          <input className="form-input" id="eventName" type="text" value={inputName} onChange={handleNameChange} placeholder="Event name" />
+          <label className="form-label" htmlFor="eventName">{t("labelName")}</label>
+          <input className="form-input" id="eventName" type="text" value={inputName} onChange={handleNameChange} placeholder={t("phEventName")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="seasonSelect">Season</label>
+          <label className="form-label" htmlFor="seasonSelect">{t("labelSeason")}</label>
           <select className="form-select" id="seasonSelect" value={inputSeasonID} onChange={handleSeasonIDChange}>
             {seasons.map((season) => (
               <option key={season.id} value={season.id}>{season.name}</option>
@@ -99,7 +101,7 @@ const AddEvent = () => {
           </select>
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="eventDate">Date</label>
+          <label className="form-label" htmlFor="eventDate">{t("labelDate")}</label>
           <DatePicker
             className="form-input"
             dateFormat="yyyy-MM-dd"
@@ -110,7 +112,7 @@ const AddEvent = () => {
         </div>
       </div>
       <div className="form-footer">
-        <button className="btn btn-primary" onClick={handlePostRequest}>Add Event</button>
+        <button className="btn btn-primary" onClick={handlePostRequest}>{t("btnAddEvent")}</button>
         <p className="response-msg">{responseMessage}</p>
       </div>
     </div>

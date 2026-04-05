@@ -6,6 +6,7 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Team } from "../../classes/TeamClass";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -22,6 +23,7 @@ const AddUser = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const t = useT();
 
   const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputUserName(event.target.value);
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputFirstName(event.target.value);
@@ -79,16 +81,16 @@ const AddUser = () => {
   if (loading) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add User</span></div>
-        <div className="loading-state"><div className="spinner" />Loading...</div>
+        <div className="card-header"><span className="card-title">{t("cardAddUser")}</span></div>
+        <div className="loading-state"><div className="spinner" />{t("loading")}</div>
       </div>
     );
   }
   if (error) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add User</span></div>
-        <div className="error-state">Failed to load teams</div>
+        <div className="card-header"><span className="card-title">{t("cardAddUser")}</span></div>
+        <div className="error-state">{t("errTeamsLoad")}</div>
       </div>
     );
   }
@@ -96,23 +98,23 @@ const AddUser = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Add User</span>
+        <span className="card-title">{t("cardAddUser")}</span>
       </div>
       <div className="form-body">
         <div className="form-group">
-          <label className="form-label" htmlFor="username">Username</label>
-          <input className="form-input" id="username" type="text" value={inputUserName} onChange={handleUserNameChange} placeholder="username" />
+          <label className="form-label" htmlFor="username">{t("labelUsername")}</label>
+          <input className="form-input" id="username" type="text" value={inputUserName} onChange={handleUserNameChange} placeholder={t("phUsername")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="firstname">First name</label>
-          <input className="form-input" id="firstname" type="text" value={inputFirstName} onChange={handleFirstNameChange} placeholder="First name" />
+          <label className="form-label" htmlFor="firstname">{t("labelFirstName")}</label>
+          <input className="form-input" id="firstname" type="text" value={inputFirstName} onChange={handleFirstNameChange} placeholder={t("phFirstName")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="lastname">Last name</label>
-          <input className="form-input" id="lastname" type="text" value={inputLastName} onChange={handleLastNameChange} placeholder="Last name" />
+          <label className="form-label" htmlFor="lastname">{t("labelLastName")}</label>
+          <input className="form-input" id="lastname" type="text" value={inputLastName} onChange={handleLastNameChange} placeholder={t("phLastName")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="teamSelect">Team</label>
+          <label className="form-label" htmlFor="teamSelect">{t("labelTeam")}</label>
           <select className="form-select" id="teamSelect" value={inputTeamID} onChange={handleTeamIDChange}>
             {teams.map((team) => (
               <option key={team.id} value={team.id}>{team.name}</option>
@@ -120,15 +122,15 @@ const AddUser = () => {
           </select>
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="password">Password</label>
-          <input className="form-input" id="password" type="password" value={inputPassword} onChange={handlePasswordChange} placeholder="Password" />
+          <label className="form-label" htmlFor="password">{t("labelPassword")}</label>
+          <input className="form-input" id="password" type="password" value={inputPassword} onChange={handlePasswordChange} placeholder={t("phPassword")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="role">Role</label>
-          <input className="form-input" id="role" type="text" value={inputRole} onChange={handleRoleChange} placeholder="Role" />
+          <label className="form-label" htmlFor="role">{t("labelRole")}</label>
+          <input className="form-input" id="role" type="text" value={inputRole} onChange={handleRoleChange} placeholder={t("phRole")} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="birthday">Birthday</label>
+          <label className="form-label" htmlFor="birthday">{t("labelBirthday")}</label>
           <DatePicker
             className="form-input"
             dateFormat="yyyy-MM-dd"
@@ -139,7 +141,7 @@ const AddUser = () => {
         </div>
       </div>
       <div className="form-footer">
-        <button className="btn btn-primary" onClick={handlePostRequest}>Add User</button>
+        <button className="btn btn-primary" onClick={handlePostRequest}>{t("btnAddUser")}</button>
         <p className="response-msg">{responseMessage}</p>
       </div>
     </div>

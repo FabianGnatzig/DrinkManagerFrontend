@@ -4,6 +4,7 @@ import "../../App.css";
 import { authFetch } from "../../lib/api";
 import { User } from "../../classes/UserClass";
 import { SeasonEvent } from "../../classes/EventClass";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -20,6 +21,7 @@ const AddBringBeer = () => {
   const [beers, setBeer] = useState<Beer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const t = useT();
 
   const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUser(Number(event.target.value));
   const handleEventChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputEvent(Number(event.target.value));
@@ -89,16 +91,16 @@ const AddBringBeer = () => {
   if (loading) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Bring Beer</span></div>
-        <div className="loading-state"><div className="spinner" />Loading...</div>
+        <div className="card-header"><span className="card-title">{t("cardAddBringBeer")}</span></div>
+        <div className="loading-state"><div className="spinner" />{t("loading")}</div>
       </div>
     );
   }
   if (error) {
     return (
       <div className="card">
-        <div className="card-header"><span className="card-title">Add Bring Beer</span></div>
-        <div className="error-state">Failed to load data</div>
+        <div className="card-header"><span className="card-title">{t("cardAddBringBeer")}</span></div>
+        <div className="error-state">{t("errDataLoad")}</div>
       </div>
     );
   }
@@ -106,11 +108,11 @@ const AddBringBeer = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Add Bring Beer</span>
+        <span className="card-title">{t("cardAddBringBeer")}</span>
       </div>
       <div className="form-body">
         <div className="form-group">
-          <label className="form-label" htmlFor="bbEvent">Event</label>
+          <label className="form-label" htmlFor="bbEvent">{t("labelEvent")}</label>
           <select className="form-select" id="bbEvent" value={inputEvent} onChange={handleEventChange}>
             {events.map((event) => (
               <option key={event.id} value={event.id}>#{event.id} — {event.name}</option>
@@ -118,7 +120,7 @@ const AddBringBeer = () => {
           </select>
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="bbUser">User</label>
+          <label className="form-label" htmlFor="bbUser">{t("labelUser")}</label>
           <select className="form-select" id="bbUser" value={inputUser} onChange={handleUserChange}>
             {users.map((user) => (
               <option key={user.id} value={user.id}>{user.first_name} {user.last_name}</option>
@@ -126,7 +128,7 @@ const AddBringBeer = () => {
           </select>
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="bbFine">Fine</label>
+          <label className="form-label" htmlFor="bbFine">{t("labelFine")}</label>
           <select className="form-select" id="bbFine" value={inputUserBeer} onChange={handleUserBeer}>
             <option value={0}>— None —</option>
             {filteredUserBeer.map((ub) => (
@@ -137,7 +139,7 @@ const AddBringBeer = () => {
           </select>
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="bbBeer">Beer</label>
+          <label className="form-label" htmlFor="bbBeer">{t("labelBeer")}</label>
           <select className="form-select" id="bbBeer" value={inputBeer} onChange={handleBeerChange}>
             {beers.map((beer) => (
               <option key={beer.id} value={beer.id}>{beer.name}</option>
@@ -146,7 +148,7 @@ const AddBringBeer = () => {
         </div>
       </div>
       <div className="form-footer">
-        <button className="btn btn-primary" onClick={handlePostRequest}>Add Entry</button>
+        <button className="btn btn-primary" onClick={handlePostRequest}>{t("btnAddEntry")}</button>
         <p className="response-msg">{responseMessage}</p>
       </div>
     </div>
