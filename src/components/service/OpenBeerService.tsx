@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { OpenBeerClass } from "../../classes/ServiceClass";
+import { useT } from "../../lib/i18n";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -8,9 +10,10 @@ function OpenBeerService() {
   const [data, setData] = useState<OpenBeerClass[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const t = useT();
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/service/all_open_beer`)
+    authFetch(`${BACKENDURL}/service/all_open_beer`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -22,30 +25,47 @@ function OpenBeerService() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    const e = error as Error;
-    return <p>Error: {e.message}</p>;
-  }
-
-  if (!data) {
-    return <p>not found</p>;
-  }
-
   return (
-    <div className="std-div">
-      <h2>Open fine Beer</h2>
-      <ul className="list-group">
-        {data.map((user_bear: OpenBeerClass) => (
-          <li className="list-group-item" key={user_bear.user}>
-            User: {user_bear.user} UserID:{user_bear.user_id} / UserBeer:{" "}
-            {user_bear.user_beer_id} / {user_bear.kind}
-          </li>
-        ))}
-      </ul>
+    <div className="card">
+      <div className="card-header">
+        <span className="card-title">{t("cardOpenFines")}</span>
+        {!loading && !error && (
+          <span className="card-count">{data.length}</span>
+        )}
+      </div>
+
+      {loading && (
+        <div className="loading-state">
+          <div className="spinner" />
+          {t("loading")}
+        </div>
+      )}
+
+      {error && (
+        <div className="error-state">
+          {t("errOpenFines")}
+        </div>
+      )}
+
+      {!loading && !error && data.length === 0 && (
+        <div className="empty-state">{t("emptyOpenFines")}</div>
+      )}
+
+      {!loading && !error && data.length > 0 && (
+        <ul className="data-list">
+          {data.map((item: OpenBeerClass) => (
+            <li className="data-item" key={`${item.user_id}-${item.user_beer_id}`} style={{ cursor: "default" }}>
+              <div className="data-item-main">
+                <div className="data-item-primary">{item.user}</div>
+                <div className="data-item-secondary">{item.kind}</div>
+              </div>
+              <div className="data-item-right">
+                <span className="badge badge-open">{t("open")}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
