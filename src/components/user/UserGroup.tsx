@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { User } from "../../classes/UserClass";
 import "../../App.css";
+import { authFetch, isAdmin } from "../../lib/api";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
 
@@ -9,9 +10,25 @@ function UserGroup() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const admin = isAdmin();
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await authFetch(`${BACKENDURL}/user/${id}`, { method: "DELETE" });
+      if (response.ok) {
+        setSelectedUser(null);
+        window.location.reload();
+      } else {
+        const err = await response.json().catch(() => null);
+        alert(`Delete failed: ${err?.detail ?? response.status}`);
+      }
+    } catch {
+      alert("Delete failed: network error");
+    }
+  };
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/user/all`)
+    authFetch(`${BACKENDURL}/user/all`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -87,6 +104,15 @@ function UserGroup() {
               </div>
             </div>
             <div className="modal-footer">
+              {admin && (
+                <button
+                  className="btn"
+                  style={{ background: "var(--red-bg)", color: "var(--red)", border: "1px solid rgba(239,68,68,0.25)", flex: 1 }}
+                  onClick={() => handleDelete(selectedUser.id)}
+                >
+                  Delete user
+                </button>
+              )}
               <button className="btn btn-ghost" onClick={() => setSelectedUser(null)}>Close</button>
             </div>
           </div>

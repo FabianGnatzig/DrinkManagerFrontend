@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { InputSeason } from "../../classes/SeasonClass";
 import { Team } from "../../classes/TeamClass";
 
@@ -19,7 +20,7 @@ const AddSeason = () => {
   const handlePostRequest = async () => {
     try {
       const data: InputSeason = { name: inputName, team_id: inputTeamID };
-      const response = await fetch(`${BACKENDURL}/season/add`, {
+      const response = await authFetch(`${BACKENDURL}/season/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -41,10 +42,11 @@ const AddSeason = () => {
   };
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/team/all`)
+    authFetch(`${BACKENDURL}/team/all`)
       .then((response) => response.json())
       .then((data) => {
         setTeams(data);
+        if (data.length > 0) setInputTeamID(data[0].id);
         setLoading(false);
       })
       .catch((error) => {

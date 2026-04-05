@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Beer, InputBringBeer, OpenUserBeer } from "../../classes/BeerClass";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { User } from "../../classes/UserClass";
 import { SeasonEvent } from "../../classes/EventClass";
 
@@ -35,7 +36,7 @@ const AddBringBeer = () => {
         user_beer_id: inputUserBeer,
         beer_id: inputBeer,
       };
-      const response = await fetch(`${BACKENDURL}/bringbeer/add`, {
+      const response = await authFetch(`${BACKENDURL}/bringbeer/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -60,10 +61,10 @@ const AddBringBeer = () => {
     const fetchData = async () => {
       try {
         const [userRes, eventRes, userbeerRes, beerRes] = await Promise.all([
-          fetch(`${BACKENDURL}/user/all`),
-          fetch(`${BACKENDURL}/event/all`),
-          fetch(`${BACKENDURL}/service/all_open_beer`),
-          fetch(`${BACKENDURL}/beer/all`),
+          authFetch(`${BACKENDURL}/user/all`),
+          authFetch(`${BACKENDURL}/event/all`),
+          authFetch(`${BACKENDURL}/service/all_open_beer`),
+          authFetch(`${BACKENDURL}/beer/all`),
         ]);
         const usersData = await userRes.json();
         const eventData = await eventRes.json();
@@ -73,24 +74,16 @@ const AddBringBeer = () => {
         setEvents(eventData);
         setUserBeer(userBeerData);
         setBeer(beerData);
+        if (usersData.length > 0) setInputUser(usersData[0].id);
+        if (eventData.length > 0) setInputEvent(eventData[0].id);
+        if (beerData.length > 0) setInputBeer(beerData[0].id);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setError(error as never);
+        setLoading(false);
       }
     };
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    fetch(`${BACKENDURL}/user/all`)
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
   }, []);
 
   if (loading) {

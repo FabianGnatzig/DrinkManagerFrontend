@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import logo from "./assets/Logo_oB_quadrat_weiss.png";
+import LoginPage from "./components/auth/LoginPage";
+import { getToken, clearToken, isAdminOrManager } from "./lib/api";
 
 import OpenBeerService from "./components/service/OpenBeerService";
 import UserBeerAmountService from "./components/service/UserAmountService";
@@ -75,7 +77,17 @@ const SECTION_META: Record<Section, { title: string; subtitle: string }> = {
 };
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState<boolean>(() => !!getToken());
   const [active, setActive] = useState<Section>("dashboard");
+
+  if (!loggedIn) {
+    return <LoginPage onLogin={() => setLoggedIn(true)} />;
+  }
+
+  const handleLogout = () => {
+    clearToken();
+    setLoggedIn(false);
+  };
   const meta = SECTION_META[active];
 
   return (
@@ -104,6 +116,13 @@ function App() {
             ))}
           </div>
         ))}
+
+        <div className="sidebar-footer">
+          <button className="btn-logout" onClick={handleLogout}>
+            <span className="nav-icon">⏏</span>
+            Sign out
+          </button>
+        </div>
       </aside>
 
       {/* Main */}
@@ -137,7 +156,7 @@ function App() {
         {active === "users" && (
           <div className="section-grid">
             <UserGroup />
-            <AddUser />
+            {isAdminOrManager() && <AddUser />}
           </div>
         )}
 

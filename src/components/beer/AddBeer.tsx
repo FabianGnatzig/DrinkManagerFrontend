@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { InputBeer } from "../../classes/BeerClass";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { Brewery } from "../../classes/BreweryClasses";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
@@ -43,7 +44,7 @@ const AddBeer = () => {
         alcohol: inputAlcohol,
         volume: inputVolume,
       };
-      const response = await fetch(`${BACKENDURL}/beer/add`, {
+      const response = await authFetch(`${BACKENDURL}/beer/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -65,10 +66,11 @@ const AddBeer = () => {
   };
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/brewery/all`)
+    authFetch(`${BACKENDURL}/brewery/all`)
       .then((response) => response.json())
       .then((data) => {
         setBrewerys(data);
+        if (data.length > 0) setInputID(data[0].id);
         setLoading(false);
       })
       .catch((error) => {

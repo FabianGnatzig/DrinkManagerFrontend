@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { InputUserBeer } from "../../classes/BeerClass";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { User } from "../../classes/UserClass";
 
 const BACKENDURL = import.meta.env.VITE_API_URL;
@@ -20,7 +21,7 @@ const AddUserBeer = () => {
   const handlePostRequest = async () => {
     try {
       const data: InputUserBeer = { user_id: inputId, kind: inputKind };
-      const response = await fetch(`${BACKENDURL}/userbeer/add`, {
+      const response = await authFetch(`${BACKENDURL}/userbeer/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -42,10 +43,11 @@ const AddUserBeer = () => {
   };
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/user/all`)
+    authFetch(`${BACKENDURL}/user/all`)
       .then((response) => response.json())
       .then((data) => {
         setUsers(data);
+        if (data.length > 0) setInputID(data[0].id);
         setLoading(false);
       })
       .catch((error) => {

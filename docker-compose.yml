@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "5173:80"
+    extra_hosts:
+      # Allows nginx inside the container to reach the backend on the Docker host.
+      # Works on Linux (Docker Desktop on Mac/Windows already provides this).
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

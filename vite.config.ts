@@ -9,6 +9,7 @@ export default defineConfig({
     port: 5173,
     allowedHosts: ["bier.gnatzig.eu", "*"],
     proxy: {
+      "/auth": "http://localhost:6969",
       "/beer": "http://localhost:6969",
       "/brewery": "http://localhost:6969",
       "/user": "http://localhost:6969",

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { InputUser } from "../../classes/UserClass";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -40,17 +41,17 @@ const AddUser = () => {
         team_id: inputTeamID,
         birthday: moment(inputBirthday).format("YYYY-MM-DD"),
       };
-      const response = await fetch(`${BACKENDURL}/user/add`, {
+      const response = await authFetch(`${BACKENDURL}/user/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        const responseData = await response.json();
-        setResponseMessage(responseData.message || "User added!");
+        setResponseMessage("User added!");
         window.location.reload();
       } else {
-        setResponseMessage("Error posting data");
+        const err = await response.json().catch(() => null);
+        setResponseMessage(`Error ${response.status}: ${err?.detail ?? "Unknown error"}`);
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -62,10 +63,11 @@ const AddUser = () => {
   };
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/team/all`)
+    authFetch(`${BACKENDURL}/team/all`)
       .then((response) => response.json())
       .then((data) => {
         setTeams(data);
+        if (data.length > 0) setInputTeamID(data[0].id);
         setLoading(false);
       })
       .catch((error) => {

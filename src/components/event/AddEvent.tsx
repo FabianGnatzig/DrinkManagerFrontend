@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../App.css";
+import { authFetch } from "../../lib/api";
 import { InputEvent } from "../../classes/EventClass";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -27,7 +28,7 @@ const AddEvent = () => {
         season_id: inputSeasonID,
         event_date: moment(inputDate).format("YYYY-MM-DD"),
       };
-      const response = await fetch(`${BACKENDURL}/event/add`, {
+      const response = await authFetch(`${BACKENDURL}/event/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -49,10 +50,11 @@ const AddEvent = () => {
   };
 
   useEffect(() => {
-    fetch(`${BACKENDURL}/season/all`)
+    authFetch(`${BACKENDURL}/season/all`)
       .then((response) => response.json())
       .then((data) => {
         setSeasons(data);
+        if (data.length > 0) setInputSeasonID(data[0].id);
         setLoading(false);
       })
       .catch((error) => {
