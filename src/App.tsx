@@ -38,6 +38,7 @@ type Section =
 function App() {
   const [loggedIn, setLoggedIn] = useState<boolean>(() => !!getToken());
   const [active, setActive] = useState<Section>("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const t = useT();
   const { lang, setLang } = useLang();
 
@@ -96,8 +97,28 @@ function App() {
 
   return (
     <div className="app-shell">
+      {/* Mobile top bar */}
+      <div className="mobile-topbar">
+        <button
+          className="menu-toggle"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+        <span className="mobile-topbar-title">{meta.title}</span>
+      </div>
+
+      {/* Sidebar backdrop */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className={`sidebar${sidebarOpen ? " open" : ""}`}>
         <div className="sidebar-logo">
           <img src={logo} alt="Logo" />
           <span className="sidebar-logo-text">Drink Mgr</span>
@@ -112,7 +133,7 @@ function App() {
               <button
                 key={item.id}
                 className={`nav-item${active === item.id ? " active" : ""}`}
-                onClick={() => setActive(item.id)}
+                onClick={() => { setActive(item.id); setSidebarOpen(false); }}
               >
                 <span className="nav-icon">{item.icon}</span>
                 {item.label}
