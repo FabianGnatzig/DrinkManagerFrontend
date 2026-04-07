@@ -164,6 +164,9 @@ const translations = {
     loginErrCredentials: "Invalid username or password",
     loginErrServer: "Login failed — please try again",
     loginErrNetwork: "Cannot reach the server",
+    // Search
+    phSearchBeers: "Search beers…",
+    searchNoResults: "No results",
     // Placeholders
     phBeerName: "Beer name",
     phBreweryName: "Brewery name",
@@ -338,6 +341,9 @@ const translations = {
     loginErrCredentials: "Ungültiger Benutzername oder Passwort",
     loginErrServer: "Anmeldung fehlgeschlagen – bitte erneut versuchen",
     loginErrNetwork: "Server nicht erreichbar",
+    // Search
+    phSearchBeers: "Biere suchen…",
+    searchNoResults: "Keine Ergebnisse",
     // Placeholders
     phBeerName: "Biername",
     phBreweryName: "Brauerei",

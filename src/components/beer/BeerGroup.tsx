@@ -11,6 +11,7 @@ function BeerGroup() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedBeer, setSelectedBeer] = useState<Beer | null>(null);
+  const [search, setSearch] = useState("");
   const t = useT();
 
   useEffect(() => {
@@ -41,12 +42,29 @@ function BeerGroup() {
           </div>
         )}
         {error && <div className="error-state">{t("errBeers")}</div>}
+        {!loading && !error && data.length > 0 && (
+          <div className="card-search">
+            <input
+              className="card-search-input"
+              type="text"
+              placeholder={t("phSearchBeers")}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        )}
         {!loading && !error && data.length === 0 && (
           <div className="empty-state">{t("emptyBeers")}</div>
         )}
-        {!loading && !error && data.length > 0 && (
+        {!loading && !error && data.length > 0 && (() => {
+          const filtered = data.filter((b) =>
+            b.name.toLowerCase().includes(search.toLowerCase())
+          );
+          return filtered.length === 0 ? (
+            <div className="empty-state">{t("searchNoResults")}</div>
+          ) : (
           <ul className="data-list">
-            {data.map((beer: Beer) => (
+            {filtered.map((beer: Beer) => (
               <li
                 className="data-item"
                 key={beer.id}
@@ -63,7 +81,8 @@ function BeerGroup() {
               </li>
             ))}
           </ul>
-        )}
+          );
+        })()}
       </div>
 
       {selectedBeer && (

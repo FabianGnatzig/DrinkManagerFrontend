@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { Beer, InputBringBeer, OpenUserBeer } from "../../classes/BeerClass";
 import "../../App.css";
 import { authFetch } from "../../lib/api";
@@ -25,10 +26,10 @@ const AddBringBeer = () => {
 
   const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUser(Number(event.target.value));
   const handleEventChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputEvent(Number(event.target.value));
-  const handleBeerChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputBeer(Number(event.target.value));
-  const handleUserBeer = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUserBeer(Number(event.target.value));
+const handleUserBeer = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUserBeer(Number(event.target.value));
 
   const filteredUserBeer = userBeers.filter((ub) => ub.user_id === inputUser);
+  const beerOptions = beers.map((b) => ({ value: b.id, label: b.name }));
 
   const handlePostRequest = async () => {
     try {
@@ -140,11 +141,47 @@ const AddBringBeer = () => {
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="bbBeer">{t("labelBeer")}</label>
-          <select className="form-select" id="bbBeer" value={inputBeer} onChange={handleBeerChange}>
-            {beers.map((beer) => (
-              <option key={beer.id} value={beer.id}>{beer.name}</option>
-            ))}
-          </select>
+          <Select
+            inputId="bbBeer"
+            options={beerOptions}
+            value={beerOptions.find((o) => o.value === inputBeer) ?? null}
+            onChange={(opt) => { if (opt) setInputBeer(opt.value); }}
+            placeholder={t("phSearchBeers")}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
+            styles={{
+              control: (base, state) => ({
+                ...base,
+                background: "var(--surface-2)",
+                borderColor: state.isFocused ? "var(--primary)" : "var(--border)",
+                boxShadow: state.isFocused ? "0 0 0 3px var(--primary-glow)" : "none",
+                borderRadius: 8,
+                fontSize: 13,
+                minHeight: 36,
+                "&:hover": { borderColor: "var(--border-hover)" },
+              }),
+              menu: (base) => ({
+                ...base,
+                background: "var(--surface-2)",
+                border: "1px solid var(--border-hover)",
+                borderRadius: 8,
+                boxShadow: "0 16px 40px rgba(0,0,0,0.5)",
+                zIndex: 999,
+              }),
+              option: (base, state) => ({
+                ...base,
+                background: state.isFocused ? "var(--surface-3)" : "transparent",
+                color: state.isFocused ? "var(--text)" : "var(--text-muted)",
+                fontSize: 13,
+                cursor: "pointer",
+              }),
+              singleValue: (base) => ({ ...base, color: "var(--text)" }),
+              input: (base) => ({ ...base, color: "var(--text)" }),
+              placeholder: (base) => ({ ...base, color: "var(--text-dim)" }),
+              indicatorSeparator: () => ({ display: "none" }),
+              dropdownIndicator: (base) => ({ ...base, color: "var(--text-dim)", padding: "0 8px" }),
+            }}
+          />
         </div>
       </div>
       <div className="form-footer">

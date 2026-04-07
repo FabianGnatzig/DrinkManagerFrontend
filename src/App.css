@@ -229,6 +229,34 @@ body,
   border-radius: 20px;
 }
 
+/* ── Card search bar ───────────────────────────── */
+.card-search {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-search-input {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.card-search-input::placeholder {
+  color: var(--text-dim);
+}
+
+.card-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
 /* ── Data list ─────────────────────────────────── */
 .data-list {
   list-style: none;
