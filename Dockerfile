@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . .
 
 # VITE_API_URL is empty so the app uses relative URLs —
 # nginx handles the API proxy at runtime.
-RUN npm run build
+RUN NODE_OPTIONS=--max-old-space-size=2048 npm run build
 
 # Stage 2: Serve with nginx
 FROM nginx:alpine
