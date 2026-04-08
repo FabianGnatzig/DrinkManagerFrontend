@@ -14,3 +14,10 @@ export type InputEvent = {
   event_date: string;
   season_id: number;
 };
+
+export type InputRecurringEvent = {
+  name: string;
+  event_date: string;
+  season_id: number;
+  weeks: number;
+};

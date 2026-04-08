@@ -17,7 +17,7 @@ const AddUser = () => {
   const [inputLastName, setInputLastName] = useState("");
   const [inputTeamID, setInputTeamID] = useState(0);
   const [inputPassword, setInputPassword] = useState("");
-  const [inputRole, setInputRole] = useState("");
+  const [inputRole, setInputRole] = useState("user");
   const [inputBirthday, setInputBirthday] = useState(new Date());
 
   const [teams, setTeams] = useState<Team[]>([]);
@@ -30,7 +30,7 @@ const AddUser = () => {
   const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputLastName(event.target.value);
   const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputTeamID(Number(event.target.value));
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputPassword(event.target.value);
-  const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputRole(event.target.value);
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputRole(event.target.value);
 
   const handlePostRequest = async () => {
     try {
@@ -127,7 +127,11 @@ const AddUser = () => {
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="role">{t("labelRole")}</label>
-          <input className="form-input" id="role" type="text" value={inputRole} onChange={handleRoleChange} placeholder={t("phRole")} />
+          <select className="form-select" id="role" value={inputRole} onChange={handleRoleChange}>
+            <option value="user">User</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+          </select>
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="birthday">{t("labelBirthday")}</label>

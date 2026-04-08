@@ -19,6 +19,7 @@ import SeasonGroup from "./components/season/SeasonGroup";
 import AddSeason from "./components/season/AddSeason";
 import EventGroup from "./components/event/EventGroup";
 import AddEvent from "./components/event/AddEvent";
+import AddRecurringEvent from "./components/event/AddRecurringEvent";
 import UserBeerGroup from "./components/beer/UserBeerGroup";
 import AddUserBeer from "./components/beer/AddUserBeer";
 import BringBeerGroup from "./components/beer/BringBeerGroup";
@@ -217,6 +218,7 @@ function App() {
           <div className="section-grid">
             <EventGroup />
             <AddEvent />
+            <AddRecurringEvent />
           </div>
         )}
 
