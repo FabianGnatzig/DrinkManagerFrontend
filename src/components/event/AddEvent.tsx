@@ -14,14 +14,14 @@ const AddEvent = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [inputName, setInputName] = useState("");
   const [inputDate, setInputDate] = useState(new Date());
-  const [inputSeasonID, setInputSeasonID] = useState(0);
+  const [inputSeasonID, setInputSeasonID] = useState("");
   const [seasons, setSeasons] = useState<Season[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const t = useT();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
-  const handleSeasonIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputSeasonID(Number(event.target.value));
+  const handleSeasonIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputSeasonID(event.target.value);
 
   const handlePostRequest = async () => {
     try {
@@ -56,7 +56,7 @@ const AddEvent = () => {
       .then((response) => response.json())
       .then((data) => {
         setSeasons(data);
-        if (data.length > 0) setInputSeasonID(data[0].id);
+        if (data.length > 0) setInputSeasonID(String(data[0].id));
         setLoading(false);
       })
       .catch((error) => {

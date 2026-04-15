@@ -1,7 +1,7 @@
 import { Beer } from "./BeerClass";
 
 export type Brewery = {
-  id: number;
+  id: string;
   name: string;
   city: string;
   country: string;

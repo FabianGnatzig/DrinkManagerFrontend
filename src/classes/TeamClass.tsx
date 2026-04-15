@@ -2,7 +2,7 @@ import { Season } from "./SeasonClass";
 import { User } from "./UserClass";
 
 export type Team = {
-  id: number;
+  id: string;
   name: string;
   seasons: Season[];
   users: User[];

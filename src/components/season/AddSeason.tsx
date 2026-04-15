@@ -10,13 +10,13 @@ const BACKENDURL = import.meta.env.VITE_API_URL;
 const AddSeason = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [inputName, setInputName] = useState("");
-  const [inputTeamID, setInputTeamID] = useState(0);
+  const [inputTeamID, setInputTeamID] = useState("");
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const t = useT();
 
-  const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputTeamID(Number(event.target.value));
+  const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputTeamID(event.target.value);
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
   const handlePostRequest = async () => {
@@ -48,7 +48,7 @@ const AddSeason = () => {
       .then((response) => response.json())
       .then((data) => {
         setTeams(data);
-        if (data.length > 0) setInputTeamID(data[0].id);
+        if (data.length > 0) setInputTeamID(String(data[0].id));
         setLoading(false);
       })
       .catch((error) => {

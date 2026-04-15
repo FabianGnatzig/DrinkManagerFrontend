@@ -14,7 +14,7 @@ const AddRecurringEvent = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [inputName, setInputName] = useState("");
   const [inputDate, setInputDate] = useState(new Date());
-  const [inputSeasonID, setInputSeasonID] = useState(0);
+  const [inputSeasonID, setInputSeasonID] = useState("");
   const [inputWeeks, setInputWeeks] = useState(1);
   const [seasons, setSeasons] = useState<Season[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,7 @@ const AddRecurringEvent = () => {
       .then((response) => response.json())
       .then((data) => {
         setSeasons(data);
-        if (data.length > 0) setInputSeasonID(data[0].id);
+        if (data.length > 0) setInputSeasonID(String(data[0].id));
         setLoading(false);
       })
       .catch((error) => {
@@ -104,7 +104,7 @@ const AddRecurringEvent = () => {
             className="form-select"
             id="recSeasonSelect"
             value={inputSeasonID}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setInputSeasonID(Number(e.target.value))}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setInputSeasonID(e.target.value)}
           >
             {seasons.map((season) => (
               <option key={season.id} value={season.id}>{season.name}</option>

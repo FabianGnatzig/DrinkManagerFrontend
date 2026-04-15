@@ -14,7 +14,7 @@ function UserGroup() {
   const admin = isAdmin();
   const t = useT();
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
       const response = await authFetch(`${BACKENDURL}/user/${id}`, { method: "DELETE" });
       if (response.ok) {

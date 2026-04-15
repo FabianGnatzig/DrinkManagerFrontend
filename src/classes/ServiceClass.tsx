@@ -1,7 +1,7 @@
 export type OpenBeerClass = {
   user: string;
-  user_id: number;
-  user_beer_id: number;
+  user_id: string;
+  user_beer_id: string;
   kind: string;
 };
 

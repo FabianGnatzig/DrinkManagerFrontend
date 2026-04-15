@@ -1,44 +1,44 @@
 import { Brewery } from "./BreweryClasses";
 
 export type BringBeer = {
-  id: number;
-  event_id: number;
-  user_id: number;
-  user_beer_id: number;
-  beer_id: number;
+  id: string;
+  event_id: string;
+  user_id: string;
+  user_beer_id: string;
+  beer_id: string;
   done: boolean;
 };
 
 export type InputBringBeer = {
-  event_id: number;
-  user_id: number;
-  user_beer_id: number;
-  beer_id: number;
+  event_id: string;
+  user_id: string;
+  user_beer_id: string;
+  beer_id: string;
 };
 
 export type UserBeer = {
-  id: number;
-  user_id: number;
+  id: string;
+  user_id: string;
   kind: string;
 };
 
 export type OpenUserBeer = {
-  user_beer_id: number;
-  user_id: number;
+  user_beer_id: string;
+  user_id: string;
   user: string;
   kind: string;
 };
 
 export type InputUserBeer = {
-  user_id: number;
+  user_id: string;
   kind: string;
 };
 
 export type Beer = {
-  id: number;
+  id: string;
   name: string;
   beer_code: number;
-  brewery_id: number;
+  brewery_id: string;
   volume: number;
   alcohol: number;
   brewery: Brewery;
@@ -48,7 +48,7 @@ export type Beer = {
 export type InputBeer = {
   name: string;
   beer_code: number;
-  brewery_id: number;
+  brewery_id: string;
   volume: number;
   alcohol: number;
 };

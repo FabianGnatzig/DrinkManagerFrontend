@@ -15,7 +15,7 @@ const AddUser = () => {
   const [inputUserName, setInputUserName] = useState("");
   const [inputFirstName, setInputFirstName] = useState("");
   const [inputLastName, setInputLastName] = useState("");
-  const [inputTeamID, setInputTeamID] = useState(0);
+  const [inputTeamID, setInputTeamID] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [inputRole, setInputRole] = useState("user");
   const [inputBirthday, setInputBirthday] = useState(new Date());
@@ -28,7 +28,7 @@ const AddUser = () => {
   const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputUserName(event.target.value);
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputFirstName(event.target.value);
   const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputLastName(event.target.value);
-  const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputTeamID(Number(event.target.value));
+  const handleTeamIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputTeamID(event.target.value);
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputPassword(event.target.value);
   const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputRole(event.target.value);
 
@@ -69,7 +69,7 @@ const AddUser = () => {
       .then((response) => response.json())
       .then((data) => {
         setTeams(data);
-        if (data.length > 0) setInputTeamID(data[0].id);
+        if (data.length > 0) setInputTeamID(String(data[0].id));
         setLoading(false);
       })
       .catch((error) => {

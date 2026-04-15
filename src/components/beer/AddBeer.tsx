@@ -10,7 +10,7 @@ const BACKENDURL = import.meta.env.VITE_API_URL;
 const AddBeer = () => {
   const [responseMessage, setResponseMessage] = useState("");
 
-  const [inputId, setInputID] = useState(1);
+  const [inputId, setInputID] = useState("");
   const [inputName, setInputName] = useState("");
   const [inputBeerCode, setInputBeerCode] = useState(0);
   const [inputAlcohol, setInputAlcohol] = useState(5.0);
@@ -22,7 +22,7 @@ const AddBeer = () => {
   const t = useT();
 
   const handleIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setInputID(Number(event.target.value));
+    setInputID(event.target.value);
   };
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputName(event.target.value);
@@ -72,7 +72,7 @@ const AddBeer = () => {
       .then((response) => response.json())
       .then((data) => {
         setBrewerys(data);
-        if (data.length > 0) setInputID(data[0].id);
+        if (data.length > 0) setInputID(String(data[0].id));
         setLoading(false);
       })
       .catch((error) => {

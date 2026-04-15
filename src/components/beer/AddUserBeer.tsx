@@ -9,7 +9,7 @@ const BACKENDURL = import.meta.env.VITE_API_URL;
 
 const AddUserBeer = () => {
   const [responseMessage, setResponseMessage] = useState("");
-  const [inputId, setInputID] = useState(1);
+  const [inputId, setInputID] = useState("");
   const [inputKind, setInputKind] = useState("");
 
   const [users, setUsers] = useState<User[]>([]);
@@ -17,7 +17,7 @@ const AddUserBeer = () => {
   const [error, setError] = useState(null);
   const t = useT();
 
-  const handleIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputID(Number(event.target.value));
+  const handleIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputID(event.target.value);
   const handleKindChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputKind(event.target.value);
 
   const handlePostRequest = async () => {
@@ -49,7 +49,7 @@ const AddUserBeer = () => {
       .then((response) => response.json())
       .then((data) => {
         setUsers(data);
-        if (data.length > 0) setInputID(data[0].id);
+        if (data.length > 0) setInputID(String(data[0].id));
         setLoading(false);
       })
       .catch((error) => {

@@ -11,10 +11,10 @@ const BACKENDURL = import.meta.env.VITE_API_URL;
 
 const AddBringBeer = () => {
   const [responseMessage, setResponseMessage] = useState("");
-  const [inputUserBeer, setInputUserBeer] = useState(1);
-  const [inputEvent, setInputEvent] = useState(0);
-  const [inputUser, setInputUser] = useState(0);
-  const [inputBeer, setInputBeer] = useState(0);
+  const [inputUserBeer, setInputUserBeer] = useState("");
+  const [inputEvent, setInputEvent] = useState("");
+  const [inputUser, setInputUser] = useState("");
+  const [inputBeer, setInputBeer] = useState("");
 
   const [users, setUsers] = useState<User[]>([]);
   const [events, setEvents] = useState<SeasonEvent[]>([]);
@@ -24,9 +24,9 @@ const AddBringBeer = () => {
   const [error, setError] = useState(null);
   const t = useT();
 
-  const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUser(Number(event.target.value));
-  const handleEventChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputEvent(Number(event.target.value));
-const handleUserBeer = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUserBeer(Number(event.target.value));
+  const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUser(event.target.value);
+  const handleEventChange = (event: React.ChangeEvent<HTMLSelectElement>) => setInputEvent(event.target.value);
+  const handleUserBeer = (event: React.ChangeEvent<HTMLSelectElement>) => setInputUserBeer(event.target.value);
 
   const filteredUserBeer = userBeers.filter((ub) => ub.user_id === inputUser);
   const beerOptions = beers.map((b) => ({ value: b.id, label: b.name }));
@@ -77,9 +77,9 @@ const handleUserBeer = (event: React.ChangeEvent<HTMLSelectElement>) => setInput
         setEvents(eventData);
         setUserBeer(userBeerData);
         setBeer(beerData);
-        if (usersData.length > 0) setInputUser(usersData[0].id);
-        if (eventData.length > 0) setInputEvent(eventData[0].id);
-        if (beerData.length > 0) setInputBeer(beerData[0].id);
+        if (usersData.length > 0) setInputUser(String(usersData[0].id));
+        if (eventData.length > 0) setInputEvent(String(eventData[0].id));
+        if (beerData.length > 0) setInputBeer(String(beerData[0].id));
         setLoading(false);
       } catch (error) {
         setError(error as never);

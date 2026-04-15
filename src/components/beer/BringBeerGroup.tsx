@@ -8,14 +8,14 @@ const BACKENDURL = import.meta.env.VITE_API_URL;
 
 function BringBeerGroup() {
   const [data, setData] = useState<BringBeer[]>([]);
-  const [beerMap, setBeerMap] = useState<Record<number, string>>({});
+  const [beerMap, setBeerMap] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedBeer, setSelectedBeer] = useState<BringBeer | null>(null);
   const [search, setSearch] = useState("");
   const t = useT();
 
-  const handleDone = async (id: number) => {
+  const handleDone = async (id: string) => {
     try {
       await authFetch(`${BACKENDURL}/bringbeer/done/${id}`);
       window.location.reload();
@@ -31,7 +31,7 @@ function BringBeerGroup() {
     ])
       .then(([bringBeers, beers]) => {
         setData(bringBeers);
-        const map: Record<number, string> = {};
+        const map: Record<string, string> = {};
         (beers as Beer[]).forEach((b) => { map[b.id] = b.name; });
         setBeerMap(map);
         setLoading(false);
